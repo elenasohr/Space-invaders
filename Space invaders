@@ -1,0 +1,140 @@
+import math 
+from random import randint 
+
+mode = 0
+
+ship = None 
+enemy2, enemy1 = None, None
+
+bullet = None
+bulletshot = False
+BulletList = []
+bullety = 100
+
+enemyx = 100
+enemyY = 75
+x = 350
+xspeed = 4
+x2speed = 5
+
+y = 100
+yspeed = -125
+
+
+score = 0 
+
+space = loadImage("background.png")
+def setup():
+    size(800,600)
+    background(0)
+    space = loadImage("background.png")
+
+def draw():
+    global x, bullety, xspeed, enemyx, x2speed, bulletshot, bulletload, enemyY, BulletList,y, bulletx, score, mode 
+    if mode == 0:
+        menu = loadImage("start.png")
+        background(menu)
+        text("Press p to begin your battle against space", 300, 75)
+        text("Press r to view the rules of the game", 300, 100)
+    if keyPressed:
+        if (key) == 'p':
+            mode = 1
+        elif(key) == 'r':
+            mode = 2
+            
+    if mode == 2:
+        rules = loadImage("rules.png")
+        background(rules)
+
+    if mode == 1:     
+        x += xspeed
+        enemyx += x2speed
+        bullet = loadImage("bullet.png")
+        space = loadImage("background.png")
+        background(space)
+        ship = loadImage("ship.png")
+        enemy2 = loadImage("enemy2.png")
+        enemy1 = loadImage("enemy1.png")
+        image(bullet, x, bullety + 490)
+        image(bullet, x + 37, bullety + 490)
+        image(ship, x, 530)
+        if x <= 5:
+            xspeed = 2
+        elif x >= 730:
+            xspeed = -2
+        image(enemy2, enemyx, enemyY, 50 , 50)
+        image(enemy1, enemyx + 100, enemyY, 50 , 50)
+        image(enemy2, enemyx + 200, enemyY, 50 , 50)
+        image(enemy1, enemyx + 300, enemyY, 50 , 50)
+        image(enemy2, enemyx + 400, enemyY, 50 , 50)
+        image(enemy1, enemyx, enemyY + 50, 50 , 50)
+        image(enemy2, enemyx + 100, enemyY + 50, 50 , 50)
+        image(enemy1, enemyx + 200, enemyY + 50, 50 , 50)
+        image(enemy2, enemyx + 300, enemyY + 50, 50 , 50)
+        image(enemy2, enemyx + 400, enemyY + 50, 50 , 50)
+        image(enemy1, enemyx, enemyY + 100, 50 , 50)
+        image(enemy2, enemyx + 100, enemyY + 100, 50 , 50)
+        image(enemy2, enemyx + 200, enemyY + 100, 50 , 50)
+        image(enemy1, enemyx + 300, enemyY + 100, 50 , 50)
+        image(enemy2, enemyx + 400, enemyY + 100, 50 , 50)
+        
+    
+    
+        if enemyx >= 350:
+            x2speed = - 10 
+            enemyY = enemyY + 25
+        elif enemyx < 80:
+            x2speed = 10
+            enemyY = enemyY + 25
+    
+        if bullety <= -450:
+            bullety = 515
+            bulletshot = False
+            BulletList.append(bullety)
+            
+    
+        if bulletshot == True and bullety != -625:
+            print(bullety)
+            bullety += yspeed
+
+        
+        
+        collision = colliding(enemyx, bullety, enemyY,x)
+        if collision:
+            bullety = 515
+            bullet_state = False 
+
+ 
+def keyPressed():
+    global image, x, xspeed, yspeed, y, bulletshot, BulletList, bullet, bullety
+    if (key) == 'd': 
+        xspeed = xspeed + 1
+    if (key) == 'a':
+        xspeed = xspeed - 1
+    if(key) == 'w':
+        bulletshot = True
+        if bullety <= -450:
+            bulletshot = False
+
+    if x <= 5:
+        xspeed = 2 
+    elif x >= 730:
+        xspeed = -2
+    
+def keyReleased():
+    global xspeed
+    Letters = ['a','d'] 
+    for i in range(2):
+        if (key == Letters[i]): xspeed = 0
+    
+def collision(enemyx, bullety, enemyY,x):
+    distance = math.sqrt(math.pow(enemyx - bullety,2)) + (math.pow(enemyY - x,2))
+    if distance < 500:
+        return True 
+    else:
+        return False 
+
+
+
+
+

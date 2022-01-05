@@ -1,85 +1,148 @@
-import math 
-from random import randint 
-
+# the mode variables represents the screen shown to the player
 mode = 0
 
+explosion = None 
 ship = None 
-enemy2, enemy1 = None, None
+
+# variables for the bullets 
 
 bullet = None
 bulletshot = False
-BulletList = []
 bullety = 100
 
+# variable for the enemies 
+enemy2, enemy1 = None, None
 enemyx = 100
 enemyY = 75
+
+# location of the enemies 
+location1_y = enemyY
+location1_x = enemyx
 x = 350
 xspeed = 4
 x2speed = 5
 
 y = 100
-yspeed = -125
 
+# speed of the bullet 
+yspeed = -50
 
-score = 0 
+# location of the bullets 
+bullet1_x = x
+bullet1_y = bullety + 490
+bullet2_x = x + 37
+bullet2_y = bullety + 490
+
 
 space = loadImage("background.png")
+
+# making an enemy
+
 def setup():
+    size(60, 40)
+        
+def setup():
+    # setup of the background 
     size(800,600)
     background(0)
     space = loadImage("background.png")
 
 def draw():
-    global x, bullety, xspeed, enemyx, x2speed, bulletshot, bulletload, enemyY, BulletList,y, bulletx, score, mode 
+    global x, bullety, xspeed, enemyx, x2speed, bulletshot, bulletload, enemyY, y, bulletx, score, mode
+    # if mode = 0, then the menu of the game will be shown  
     if mode == 0:
         menu = loadImage("start.png")
         background(menu)
         text("Press p to begin your battle against space", 300, 75)
         text("Press r to view the rules of the game", 300, 100)
+    
+    # if the user clicks "p" the mode will change to the game 
     if keyPressed:
         if (key) == 'p':
             mode = 1
+    # if the user clicks "r" the mode will change to the rules of the game 
         elif(key) == 'r':
             mode = 2
-            
+    
+    # code for the second mode of the game (rules page)
     if mode == 2:
         rules = loadImage("rules.png")
         background(rules)
 
-    if mode == 1:     
+    # the space invaders game 
+    if mode == 1:  
+        
+    # x += xspeed represents the ship moving on the x axis 
         x += xspeed
+        
         enemyx += x2speed
+        
+        # bullet image 
         bullet = loadImage("bullet.png")
+        
+        # background image 
+        
         space = loadImage("background.png")
         background(space)
-        ship = loadImage("ship.png")
-        enemy2 = loadImage("enemy2.png")
-        enemy1 = loadImage("enemy1.png")
-        image(bullet, x, bullety + 490)
-        image(bullet, x + 37, bullety + 490)
-        image(ship, x, 530)
-        if x <= 5:
-            xspeed = 2
-        elif x >= 730:
-            xspeed = -2
-        image(enemy2, enemyx, enemyY, 50 , 50)
-        image(enemy1, enemyx + 100, enemyY, 50 , 50)
-        image(enemy2, enemyx + 200, enemyY, 50 , 50)
-        image(enemy1, enemyx + 300, enemyY, 50 , 50)
-        image(enemy2, enemyx + 400, enemyY, 50 , 50)
-        image(enemy1, enemyx, enemyY + 50, 50 , 50)
-        image(enemy2, enemyx + 100, enemyY + 50, 50 , 50)
-        image(enemy1, enemyx + 200, enemyY + 50, 50 , 50)
-        image(enemy2, enemyx + 300, enemyY + 50, 50 , 50)
-        image(enemy2, enemyx + 400, enemyY + 50, 50 , 50)
-        image(enemy1, enemyx, enemyY + 100, 50 , 50)
-        image(enemy2, enemyx + 100, enemyY + 100, 50 , 50)
-        image(enemy2, enemyx + 200, enemyY + 100, 50 , 50)
-        image(enemy1, enemyx + 300, enemyY + 100, 50 , 50)
-        image(enemy2, enemyx + 400, enemyY + 100, 50 , 50)
         
-    
-    
+        # calling the ship function 
+        
+        ship()
+        
+        # first enemy image
+        enemy2 = loadImage("enemy2.png")
+        
+        # second enemy image 
+        enemy1 = loadImage("enemy1.png")
+        
+        #adding location for the bullets
+        bullet1_x = x
+        bullet1_y = bullety + 490
+        
+        bullet2_x = x + 37
+        bullet2_y = bullety + 490
+        
+        # drawing bullets
+        image(bullet, bullet1_x, bullet1_y)
+        image(bullet, bullet2_x, bullet2_y)
+
+        
+        location1_x = enemyx
+        location1_y = enemyY
+        
+        location2_x = enemyx + 50
+        location2_y = enemyY
+        
+        location3_x = enemyx + 100
+        location3_y = enemyY
+        
+        location4_x = enemyx + 200
+        location4_y = enemyY
+        
+        location5_x = enemyx + 250
+        location5_y = enemyY
+        
+        image(enemy1, location1_x, location1_y, 50, 50)
+        image(enemy1, location2_x, location2_y, 50 , 50)
+        image(enemy2, location3_x, location3_y, 50 , 50)
+        image(enemy1, location4_x, location4_y, 50 , 50)
+        image(enemy2, location5_x, location5_y, 50 , 50)
+        
+        enemies_x = []
+        enemies_y = enemyY
+        
+        enemies_x.append(location1_x)
+        enemies_x.append(location2_x)
+        enemies_x.append(location3_x)
+        enemies_x.append(location4_x)
+        enemies_x.append(location5_x)
+        print(enemies_x)
+        print(location1_y)
+        
+        print("shoot")
+        shooting(enemies_x, enemies_y)
+        
+        print("move enemy")
         if enemyx >= 350:
             x2speed = - 10 
             enemyY = enemyY + 25
@@ -87,26 +150,9 @@ def draw():
             x2speed = 10
             enemyY = enemyY + 25
     
-        if bullety <= -450:
-            bullety = 515
-            bulletshot = False
-            BulletList.append(bullety)
-            
-    
-        if bulletshot == True and bullety != -625:
-            print(bullety)
-            bullety += yspeed
-
-        
-        
-        collision = colliding(enemyx, bullety, enemyY,x)
-        if collision:
-            bullety = 515
-            bullet_state = False 
-
  
 def keyPressed():
-    global image, x, xspeed, yspeed, y, bulletshot, BulletList, bullet, bullety
+    global image, x, xspeed, yspeed, y, bulletshot, bullet, bullety
     if (key) == 'd': 
         xspeed = xspeed + 1
     if (key) == 'a':
@@ -127,13 +173,46 @@ def keyReleased():
     for i in range(2):
         if (key == Letters[i]): xspeed = 0
     
-def collision(enemyx, bullety, enemyY,x):
-    distance = math.sqrt(math.pow(enemyx - bullety,2)) + (math.pow(enemyY - x,2))
-    if distance < 500:
-        return True 
-    else:
-        return False 
+    
+def collision(bullet1_x, bullet1_y, bullet2_x, bullet2_y, enemies, enemies_y):
+    global location1_y, location1_x
+    explosion = loadImage("explode.png")
+    print("x of bullet" + str(bullet1_x))
+    print("y of bullet" + str(bullet1_y))
+    print("loc" + str(enemies_y))
+    for enemy in enemies:
+        if enemies_y - 50 < bullet1_y and bullet1_y < 50 + enemies_y:
+            if ((enemy - 50 < bullet1_x and enemy + 50 > bullet1_x) or
+                     (enemy - 50 < bullet2_x and enemy + 50 > bullet2_x)):
+                print("BBBBBBBBBBBBB")
+                image(explosion, enemy, location1_y, 50, 50)
+    
+def shooting(enemies_x, enemies_y):
+    global bullety, bulletshot, bullet1_x, bullet1_y, bullet2_x, bullet2_y
+    
+    # Makes the bullets shoot multiple times 
+    if bullety <= -450:
+            bullety = 515
+            bulletshot = False
+            
+    # Makes the ship shoot bullets 
+    if bulletshot == True and bullety != -625:
+        print(" by is " + str(bullety))
+        bullety += yspeed    
+        collision(bullet1_x, bullety, bullet2_x, bullety, enemies_x, enemies_y)
 
+def ship():
+    # ship image 
+    ship = loadImage("ship.png")
+    
+    # ship location 
+    image(ship, x, 530)
+    
+    # ship boundaries and speed 
+    if x <= 5:
+        xspeed = 2
+    elif x >= 730:
+        xspeed = -2
 
 
 

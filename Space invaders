@@ -25,7 +25,7 @@ x2speed = 5
 y = 100
 
 # speed of the bullet 
-yspeed = -50
+yspeed = - 75
 
 # location of the bullets 
 bullet1_x = x
@@ -35,6 +35,9 @@ bullet2_y = bullety + 490
 
 
 space = loadImage("background.png")
+
+lstshot = []
+
 
 # making an enemy
 
@@ -48,7 +51,8 @@ def setup():
     space = loadImage("background.png")
 
 def draw():
-    global x, bullety, xspeed, enemyx, x2speed, bulletshot, bulletload, enemyY, y, bulletx, score, mode
+    global x, bullety, xspeed, enemyx, x2speed, bulletshot, bulletload, enemyY, y, bulletx, score, mode, lstshot
+
     # if mode = 0, then the menu of the game will be shown  
     if mode == 0:
         menu = loadImage("start.png")
@@ -70,8 +74,7 @@ def draw():
         background(rules)
 
     # the space invaders game 
-    if mode == 1:  
-        
+    if mode == 1:          
     # x += xspeed represents the ship moving on the x axis 
         x += xspeed
         
@@ -106,6 +109,7 @@ def draw():
         image(bullet, bullet1_x, bullet1_y)
         image(bullet, bullet2_x, bullet2_y)
 
+        # top row of enemies 
         
         location1_x = enemyx
         location1_y = enemyY
@@ -122,11 +126,65 @@ def draw():
         location5_x = enemyx + 250
         location5_y = enemyY
         
-        image(enemy1, location1_x, location1_y, 50, 50)
-        image(enemy1, location2_x, location2_y, 50 , 50)
-        image(enemy2, location3_x, location3_y, 50 , 50)
-        image(enemy1, location4_x, location4_y, 50 , 50)
-        image(enemy2, location5_x, location5_y, 50 , 50)
+        location6_x = enemyx + 300
+        location6_y = enemyY
+        
+        location7_x = enemyx + 150 
+        location7_y = enemyY
+        
+        # buttom row of enemies 
+        
+        location8_x = enemyx
+        location8_y = enemyY + 100
+        
+        location9_x = enemyx + 50 
+        location9_y = enemyY + 100
+        
+        location10_x = enemyx + 100
+        location10_y = enemyY + 100
+        
+        location11_x = enemyx + 150 
+        location11_y = enemyY + 100
+        
+        location12_x = enemyx + 200
+        location12_y = enemyY + 100
+        
+        location13_x = enemyx + 250
+        location13_y = enemyY + 100
+        
+        location14_x = enemyx + 300
+        location14_y = enemyY + 100
+    
+        
+        
+        if 1 not in lstshot:
+            image(enemy1, location1_x, location1_y, 50, 50)
+        if 2 not in lstshot:
+            image(enemy1, location2_x, location2_y, 50 , 50)
+        if 3 not in lstshot:
+            image(enemy2, location3_x, location3_y, 50 , 50)
+        if 4 not in lstshot:
+            image(enemy1, location4_x, location4_y, 50 , 50)
+        if 5 not in lstshot:
+            image(enemy2, location5_x, location5_y, 50 , 50)
+        if 6 not in lstshot:
+            image(enemy2, location6_x, location6_y, 50, 50)
+        if 7 not in lstshot:
+            image(enemy1, location7_x, location7_y, 50, 50)
+        if 8 not in lstshot:
+            image(enemy1, location8_x, location8_y, 50, 50)
+        if 9 not in lstshot:
+            image(enemy2, location9_x, location9_y, 50, 50)
+        if 10 not in lstshot:
+            image(enemy1, location10_x, location10_y, 50, 50)
+        if 11 not in lstshot:
+            image(enemy2, location11_x, location11_y, 50, 50)
+        if 12 not in lstshot:
+            image(enemy1, location12_x, location12_y, 50, 50)
+        if 13 not in lstshot:
+            image(enemy2, location13_x, location13_y, 50, 50)
+        if 14 not in lstshot:
+            image(enemy1, location14_x, location14_y, 50, 50)
         
         enemies_x = []
         enemies_y = enemyY
@@ -136,20 +194,50 @@ def draw():
         enemies_x.append(location3_x)
         enemies_x.append(location4_x)
         enemies_x.append(location5_x)
-        print(enemies_x)
-        print(location1_y)
-        
-        print("shoot")
+        enemies_x.append(location6_x)
+        enemies_x.append(location7_x)
+        enemies_x.append(location8_x)
+        enemies_x.append(location9_x)
+        enemies_x.append(location10_x)
+        enemies_x.append(location11_x)
+        enemies_x.append(location12_x)
+        enemies_x.append(location13_x)
+        enemies_x.append(location14_x)
+        #check for collision here
+        shotlst = collision(bullet1_x, bullet1_y, bullet2_x, bullet2_y, enemies_x, enemies_y)
+        # remove from the list
+        enemies_x.remove(location1_x)
+        enemies_x.remove(location2_x)
+        enemies_x.remove(location3_x)
+        enemies_x.remove(location4_x)
+        enemies_x.remove(location5_x)
+        enemies_x.remove(location6_x)
+        enemies_x.remove(location7_x)
+        enemies_x.remove(location8_x)
+        enemies_x.remove(location9_x)
+        enemies_x.remove(location10_x)
+        enemies_x.remove(location11_x)
+        enemies_x.remove(location12_x)
+        enemies_x.remove(location13_x)
+        enemies_x.remove(location14_x)
         shooting(enemies_x, enemies_y)
         
-        print("move enemy")
+        #adding enemies that will never appear again
+        for enemy in shotlst:
+            if enemy not in lstshot:
+                lstshot.append(enemy)
         if enemyx >= 350:
-            x2speed = - 10 
+            x2speed = - 13
             enemyY = enemyY + 25
         elif enemyx < 80:
-            x2speed = 10
+            x2speed = 13
             enemyY = enemyY + 25
-    
+            
+        if enemies_x == None:
+            mode = 3
+    if mode == 3:
+        winner = loadImage("winner.jpg")
+        background(winner)
  
 def keyPressed():
     global image, x, xspeed, yspeed, y, bulletshot, bullet, bullety
@@ -176,16 +264,19 @@ def keyReleased():
     
 def collision(bullet1_x, bullet1_y, bullet2_x, bullet2_y, enemies, enemies_y):
     global location1_y, location1_x
-    explosion = loadImage("explode.png")
-    print("x of bullet" + str(bullet1_x))
-    print("y of bullet" + str(bullet1_y))
-    print("loc" + str(enemies_y))
+    list_of_shot = []
+    i = 1
     for enemy in enemies:
-        if enemies_y - 50 < bullet1_y and bullet1_y < 50 + enemies_y:
-            if ((enemy - 50 < bullet1_x and enemy + 50 > bullet1_x) or
-                     (enemy - 50 < bullet2_x and enemy + 50 > bullet2_x)):
-                print("BBBBBBBBBBBBB")
-                image(explosion, enemy, location1_y, 50, 50)
+        if enemies_y - 25 < bullet1_y and bullet1_y < 25 + enemies_y:
+            if ((enemy - 25 < bullet1_x and enemy + 25 > bullet1_x) or
+                     (enemy - 25 < bullet2_x and enemy + 25 > bullet2_x)):
+                #image(explosion, enemy, location1_y, 50, 50)
+                # return the enemies removed
+                list_of_shot.append(i)
+
+        i 
+        i += 1
+    return list_of_shot
     
 def shooting(enemies_x, enemies_y):
     global bullety, bulletshot, bullet1_x, bullet1_y, bullet2_x, bullet2_y
@@ -197,9 +288,7 @@ def shooting(enemies_x, enemies_y):
             
     # Makes the ship shoot bullets 
     if bulletshot == True and bullety != -625:
-        print(" by is " + str(bullety))
         bullety += yspeed    
-        collision(bullet1_x, bullety, bullet2_x, bullety, enemies_x, enemies_y)
 
 def ship():
     # ship image 

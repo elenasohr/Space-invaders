@@ -1,0 +1,7 @@
+Description: Space invaders is a single player game where a player must evade an attack from the creatures of space! 
+You will be on a time limit as the aliens will attempt to invade your ship, the fate of space is in your hands, good luck.
+
+Rules: 
+- Use D and A to move the ship left and right 
+- Use W to shoot bullets at the enemies 
+- Only one life will be given 

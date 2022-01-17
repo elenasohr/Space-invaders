@@ -1,3 +1,8 @@
+add_library("minim")
+
+# music and sound effects
+shoot = None
+
 # the mode variables represents the screen shown to the player
 mode = 0
 
@@ -25,7 +30,7 @@ x2speed = 5
 y = 100
 
 # speed of the bullet 
-yspeed = - 75
+yspeed = - 125
 
 # location of the bullets 
 bullet1_x = x
@@ -39,16 +44,18 @@ space = loadImage("background.png")
 lstshot = []
 
 
-# making an enemy
 
-def setup():
-    size(60, 40)
         
 def setup():
+    global shoot
     # setup of the background 
     size(800,600)
     background(0)
     space = loadImage("background.png")
+    
+    # music
+    minim = Minim(this)
+    shoot = minim.loadSample("shoot.wav")
 
 def draw():
     global x, bullety, xspeed, enemyx, x2speed, bulletshot, bulletload, enemyY, y, bulletx, score, mode, lstshot
@@ -106,9 +113,7 @@ def draw():
         bullet2_y = bullety + 490
         
         # drawing bullets
-        image(bullet, bullet1_x, bullet1_y)
-        image(bullet, bullet2_x, bullet2_y)
-
+        image(bullet, bullet1_x + 30, bullet1_y)
         # top row of enemies 
         
         location1_x = enemyx
@@ -227,20 +232,22 @@ def draw():
             if enemy not in lstshot:
                 lstshot.append(enemy)
         if enemyx >= 350:
-            x2speed = - 13
+            x2speed = - 16
             enemyY = enemyY + 25
         elif enemyx < 80:
-            x2speed = 13
+            x2speed = 16
             enemyY = enemyY + 25
             
-        if enemies_x == None:
-            mode = 3
+    
+        
     if mode == 3:
         winner = loadImage("winner.jpg")
         background(winner)
+        
+        
  
 def keyPressed():
-    global image, x, xspeed, yspeed, y, bulletshot, bullet, bullety
+    global image, x, xspeed, yspeed, y, bulletshot, bullet, bullety, shoot
     if (key) == 'd': 
         xspeed = xspeed + 1
     if (key) == 'a':
@@ -249,6 +256,8 @@ def keyPressed():
         bulletshot = True
         if bullety <= -450:
             bulletshot = False
+    if (key) == "w": shoot.trigger()
+    
 
     if x <= 5:
         xspeed = 2 
@@ -267,28 +276,26 @@ def collision(bullet1_x, bullet1_y, bullet2_x, bullet2_y, enemies, enemies_y):
     list_of_shot = []
     i = 1
     for enemy in enemies:
-        if enemies_y - 25 < bullet1_y and bullet1_y < 25 + enemies_y:
-            if ((enemy - 25 < bullet1_x and enemy + 25 > bullet1_x) or
-                     (enemy - 25 < bullet2_x and enemy + 25 > bullet2_x)):
-                #image(explosion, enemy, location1_y, 50, 50)
-                # return the enemies removed
+        if enemies_y - 42 < bullet1_y and bullet1_y < 42 + enemies_y:
+            if ((enemy - 42 < bullet1_x and enemy + 42 > bullet1_x)):
                 list_of_shot.append(i)
-
-        i 
         i += 1
     return list_of_shot
     
 def shooting(enemies_x, enemies_y):
     global bullety, bulletshot, bullet1_x, bullet1_y, bullet2_x, bullet2_y
     
+
+    # Makes the ship shoot bullets 
+    if bulletshot == True and bullety != -625:
+        bullety += yspeed 
+        
     # Makes the bullets shoot multiple times 
     if bullety <= -450:
             bullety = 515
             bulletshot = False
             
-    # Makes the ship shoot bullets 
-    if bulletshot == True and bullety != -625:
-        bullety += yspeed    
+   
 
 def ship():
     # ship image 
@@ -302,7 +309,6 @@ def ship():
         xspeed = 2
     elif x >= 730:
         xspeed = -2
-
 
 
 

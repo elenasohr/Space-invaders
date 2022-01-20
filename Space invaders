@@ -4,6 +4,7 @@ add_library("minim")
 main_theme = None 
 shoot = None
 GameOver = None 
+win = None 
 
 # the mode variables represents the screen shown to the player
 mode = 0
@@ -49,7 +50,7 @@ lstshot = []
 
         
 def setup():
-    global shoot, main_theme, mode, GameOver
+    global shoot, main_theme, mode, GameOver, win
     # setup of the background 
     size(800,600)
     background(0)
@@ -64,6 +65,9 @@ def setup():
     #game over sound effect
     GameOver = minim.loadFile("GameOver.mp3")
     
+    # winner sound effect 
+    win = minim.loadFile("winner.mp3")
+    
     # main song for the game 
     main_theme = minim.loadFile("Paztec.mp3")
     
@@ -72,7 +76,7 @@ def setup():
         main_theme.play()
 
 def draw():
-    global x, bullety, xspeed, enemyx, x2speed, bulletshot, bulletload, enemyY, y, bulletx, score, mode, lstshot, main_theme, GameOver
+    global x, bullety, xspeed, enemyx, x2speed, bulletshot, bulletload, enemyY, y, bulletx, score, mode, lstshot, main_theme, GameOver, win 
 
     # if mode = 0, then the menu of the game will be shown  
     if mode == 0:
@@ -266,7 +270,9 @@ def draw():
     if mode == 3:
         winner = loadImage("winner.jpeg")
         background(winner)
-        text("Press y to play again!", 300, 90)
+        text("Press y to play again!", 320, 90)
+        main_theme.pause()
+        win.play()
         if keyPressed:
             if (key) == 'y':
                 mode = 1
@@ -276,8 +282,9 @@ def draw():
     
             
     if mode == 4:
-        gameover = loadImage("gameover.jpeg")
+        gameover = loadImage("lose.jpeg")
         background(gameover)
+        text("Press y to play again!", 320, 150)
         main_theme.pause()
         GameOver.play()
         if keyPressed:
@@ -285,8 +292,6 @@ def draw():
                 mode = 1
                 enemyY = 75
                 lstshot = []
-            if (key) == 'n':
-                mode = 0 
         
                 
         
